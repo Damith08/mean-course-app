@@ -5,10 +5,10 @@ const mongoose = require("mongoose");
 const postsRoutes = require("./routes/posts");
 
 const app = express();
-
+console.log("here 1");
 mongoose
   .connect(
-    "mongodb://atlas-sql-64ddb84d9522693fb4faa0ff-hl26a.a.query.mongodb.net/node-angular?ssl=true&authSource=admin"
+    "mongodb+srv://damith:q0juLQ5PhduaeKT0@cluster0.ia2wxzs.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("Connected to database!");
@@ -16,7 +16,7 @@ mongoose
   .catch(() => {
     console.log("Connection failed!");
   });
-
+console.log("here 2");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
