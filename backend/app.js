@@ -8,7 +8,7 @@ const app = express();
 console.log("here 1");
 mongoose
   .connect(
-    "mongodb+srv://damith:q0juLQ5PhduaeKT0@cluster0.ia2wxzs.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://damith:0AOfzWdJ8EP2KEaa@cluster0.ia2wxzs.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("Connected to database!");
