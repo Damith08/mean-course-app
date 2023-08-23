@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PostsService } from './posts.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Post } from './post.model';
+
+import { PostsService } from '../posts.service';
+import { Post } from '../post.model';
 import { mimeType } from './mime-type.validator';
 
 @Component({
@@ -11,8 +12,8 @@ import { mimeType } from './mime-type.validator';
   styleUrls: ['./post-create.component.css'],
 })
 export class PostCreateComponent implements OnInit {
-  enteredContent = '';
   enteredTitle = '';
+  enteredContent = '';
   post: Post;
   isLoading = false;
   form: FormGroup;
@@ -47,11 +48,12 @@ export class PostCreateComponent implements OnInit {
             id: postData._id,
             title: postData.title,
             content: postData.content,
-            imagePath: null,
+            imagePath: postData.imagePath,
           };
           this.form.setValue({
             title: this.post.title,
             content: this.post.content,
+            image: this.post.imagePath,
           });
         });
       } else {
@@ -87,10 +89,10 @@ export class PostCreateComponent implements OnInit {
       this.postsService.updatePost(
         this.postId,
         this.form.value.title,
-        this.form.value.content
+        this.form.value.content,
+        this.form.value.image
       );
     }
-
     this.form.reset();
   }
 }

@@ -9,7 +9,7 @@ const app = express();
 console.log("here 1");
 mongoose
   .connect(
-    "mongodb+srv://damith:7ZIDC7jQQeA8XLyp@cluster0.ia2wxzs.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://damith:7ZIDC7jQQeA8XLyp@cluster0.ia2wxzs.mongodb.net/node-angular?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("Connected to database!");
@@ -17,7 +17,7 @@ mongoose
   .catch(() => {
     console.log("Connection failed!");
   });
-console.log("here 2");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/images", express.static(path.join("backend/images")));
@@ -35,6 +35,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/posts/", postsRoutes);
+app.use("/api/posts", postsRoutes);
 
 module.exports = app;

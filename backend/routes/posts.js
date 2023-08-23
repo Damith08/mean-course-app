@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 
-const Post = require("../model/post");
+const Post = require("../models/post");
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(error, "backend/image");
+    cb(error, "backend/images");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(" ").join("-");
@@ -49,16 +49,27 @@ router.post(
   }
 );
 
-router.put("/:id", (req, res, nex) => {
-  const post = new Post({
-    _id: req.body.id,
-    title: req.body.title,
-    content: req.body.content,
-  });
-  Post.updateOne({ _id: req.params.id }, post).then((result) => {
-    res.status(200).json({ message: "Update successful!" });
-  });
-});
+router.put(
+  "/:id",
+  multer({ storage: storage }).single("image"),
+  (req, res, next) => {
+    let imagePath = req.body.imagePath;
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      imagePath = url + "/images/" + req.file.filename;
+    }
+    const post = new Post({
+      _id: req.body.id,
+      title: req.body.title,
+      content: req.body.content,
+      imagePath: imagePath,
+    });
+    console.log(post);
+    Post.updateOne({ _id: req.params.id }, post).then((result) => {
+      res.status(200).json({ message: "Update successful!" });
+    });
+  }
+);
 
 router.get("", (req, res, next) => {
   Post.find().then((documents) => {
