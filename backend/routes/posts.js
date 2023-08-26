@@ -41,15 +41,22 @@ router.post(
       creator: req.userData.userId,
     });
 
-    post.save().then((createdPost) => {
-      res.status(201).json({
-        message: "Post added successfully",
-        post: {
-          ...createdPost,
-          id: createdPost._id,
-        },
+    post
+      .save()
+      .then((createdPost) => {
+        res.status(201).json({
+          message: "Post added successfully",
+          post: {
+            ...createdPost,
+            id: createdPost._id,
+          },
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: "Creating a post failed!",
+        });
       });
-    });
   }
 );
 
@@ -70,16 +77,19 @@ router.put(
       imagePath: imagePath,
       creator: req.userData.userId,
     });
-    Post.updateOne(
-      { _id: req.params.id, creator: req.userData.userId },
-      post
-    ).then((result) => {
-      if (result.modifiedCount > 0) {
-        res.status(200).json({ message: "Update successful!" });
-      } else {
-        res.status(401).json({ message: "Not authorized!" });
-      }
-    });
+    Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
+      .then((result) => {
+        if (result.modifiedCount > 0) {
+          res.status(200).json({ message: "Update successful!" });
+        } else {
+          res.status(401).json({ message: "Not authorized!" });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: "Couldn't update post!",
+        });
+      });
   }
 );
 
@@ -100,6 +110,10 @@ router.get("", (req, res, next) => {
       message: "Posts fetched successfully!",
       posts: fetchedPosts,
       maxPosts: count,
+    });
+  }).catch((error) => {
+    res.status(500).json({
+      message: "Fetching posts failed",
     });
   });
 });
