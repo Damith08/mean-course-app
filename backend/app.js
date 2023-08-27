@@ -10,7 +10,9 @@ const app = express();
 console.log("here 1");
 mongoose
   .connect(
-    "mongodb+srv://damith:7ZIDC7jQQeA8XLyp@cluster0.ia2wxzs.mongodb.net/node-angular?retryWrites=true&w=majority"
+    "mongodb+srv://damith:" +
+      process.env.MONGO_ATLAS_PW +
+      "@cluster0.ia2wxzs.mongodb.net/node-angular?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("Connected to database!");
